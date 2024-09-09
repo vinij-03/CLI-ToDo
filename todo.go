@@ -82,6 +82,7 @@ func (t *Todos) Store(filename string) error{
 func (t *Todos) Print(){
 	
 	table := simpletable.New()
+	
 	table.Header = &simpletable.Header{
 		Cells: []*simpletable.Cell{
 			{Align: simpletable.AlignCenter, Text: "#"},
@@ -95,10 +96,16 @@ func (t *Todos) Print(){
 
 	for idx,item := range *t{
 		idx++
+		task := blue(item.Task)
+		done := red("No")
+		if item.Done{
+			task = green(fmt.Sprintf("\u2705 %s", item.Task))
+			done = green("Yes")
+		}
 		cells =append(cells,*&[]*simpletable.Cell{
 			{Text: fmt.Sprintf("%d", idx)},
-			{Text: item.Task},
-			{Text: fmt.Sprintf("%t", item.Done)},
+			{Text: task},
+			{Text: done},
 			{Text: item.CreatedAt.Format(time.RFC822)},
 			{Text: item.CompletedAt.Format(time.RFC822)},
 		})
@@ -107,10 +114,24 @@ func (t *Todos) Print(){
 	table.Body = &simpletable.Body{Cells: cells}
 
 	table.Footer = &simpletable.Footer{ Cells : []*simpletable.Cell{
-		{Align: simpletable.AlignCenter,Span: 5, Text: "Your Tasks"},
+		{Align: simpletable.AlignCenter,Span: 5, Text: red(fmt.Sprintf("Total Pending Tasks: %d", t.CountPending()))},
 	}}
 
-	table.SetStyle(simpletable.StyleCompactLite)
+	table.SetStyle(simpletable.StyleMarkdown)
 	table.Println()
 }
 
+func (t *Todos) CountPending() int{
+	total := 0
+	for _,item := range *t{
+		if !item.Done{
+			total++
+		}
+	}
+	return total
+}
+
+func (t *Todos) Clear() error {
+	*t = []item{} // Clear the slice by setting it to an empty slice
+	return nil
+}
