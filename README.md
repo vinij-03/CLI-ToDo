@@ -39,66 +39,66 @@ Once you've built the application, you can start managing your tasks from the co
 
 ### Add a New Task
 
-To add a task, use the `--add` flag followed by the task description:
+To add a task, use the `-add` flag followed by the task description:
 
 ```bash
-./todo --add "Buy groceries"
+./todo -add "Buy groceries"
 ```
 
 ### List All Tasks
 
-To display all the tasks, use the `--list` flag:
+To display all the tasks, use the `-list` flag:
 
 ```bash
-./todo --list
+./todo -list
 ```
 
 ### Mark a Task as Completed
 
-To mark a specific task as completed, use the `--complete` flag followed by the task number:
+To mark a specific task as completed, use the `-complete` flag followed by the task number:
 
 ```bash
-./todo --complete 1
+./todo -complete 1
 ```
 
 ### Delete a Task
 
-To delete a task, use the `--del` flag followed by the task number:
+To delete a task, use the `-del` flag followed by the task number:
 
 ```bash
-./todo --del 2
+./todo -del 2
 ```
 
 ### Clear All Tasks
 
-To remove all tasks from the list, use the `--clear` flag:
+To remove all tasks from the list, use the `-clear` flag:
 
 ```bash
-./todo --clear
+./todo -clear
 ```
 
 ### Example Workflow
 
 1. Add tasks:
    ```bash
-   ./todo --add "Write CLI app"
-   ./todo --add "Test the app"
+   ./todo -add "Write CLI app"
+   ./todo -add "Test the app"
    ```
 2. List tasks:
    ```bash
-   ./todo --list
+   ./todo -list
    ```
 3. Mark task 1 as completed:
    ```bash
-   ./todo --complete 1
+   ./todo -complete 1
    ```
 4. Delete task 2:
    ```bash
-   ./todo --del 2
+   ./todo -del 2
    ```
 5. Clear all tasks:
    ```bash
-   ./todo --clear
+   ./todo -clear
    ```
 
 ## Task Storage
