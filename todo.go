@@ -1,13 +1,16 @@
 package todo
-import {
+
+import (
+	
 	"encoding/json"
 	"errors"
 	"fmt"
+
 	"github.com/alexeyco/simpletable"
 	"io/ioutil"
 	"os"
 	"time"
-}
+)
 
 type item struct{
 	Task string
@@ -32,7 +35,7 @@ func (t *Todos) Add(task string){
 func (t *Todos) Complete(index int)error {
 	ls := *t
 	if index <=0 || index>len(ls){
-		return errors.Now("Invalid index")
+		return errors.New("Invalid index")
 	}
 	ls[index-1].CompletedAt = time.Now()
 	ls[index-1].Done = true
@@ -42,9 +45,9 @@ func (t *Todos) Complete(index int)error {
 func (t *Todos) Delete(index int) error{
 	ls := *t
 	if index <=0 || index>len(ls){
-		return errors.Now("Invalid index")
+		return errors.New("Invalid index")
 	}
-	*l = append(ls[:index-1], ls[index:]...)
+	*t = append(ls[:index-1], ls[index:]...)
 	return nil
 }
 
@@ -75,3 +78,39 @@ func (t *Todos) Store(filename string) error{
 
 	return ioutil.WriteFile(filename, data, 0644)
 }
+
+func (t *Todos) Print(){
+	
+	table := simpletable.New()
+	table.Header = &simpletable.Header{
+		Cells: []*simpletable.Cell{
+			{Align: simpletable.AlignCenter, Text: "#"},
+			{Align: simpletable.AlignCenter, Text: "Task"},
+			{Align: simpletable.AlignCenter, Text: "Done?"},
+			{Align: simpletable.AlignCenter, Text: "Created At"},
+			{Align: simpletable.AlignCenter, Text: "Completed At"},
+		},
+	}
+	var cells [][]*simpletable.Cell
+
+	for idx,item := range *t{
+		idx++
+		cells =append(cells,*&[]*simpletable.Cell{
+			{Text: fmt.Sprintf("%d", idx)},
+			{Text: item.Task},
+			{Text: fmt.Sprintf("%t", item.Done)},
+			{Text: item.CreatedAt.Format(time.RFC822)},
+			{Text: item.CompletedAt.Format(time.RFC822)},
+		})
+	}
+
+	table.Body = &simpletable.Body{Cells: cells}
+
+	table.Footer = &simpletable.Footer{ Cells : []*simpletable.Cell{
+		{Align: simpletable.AlignCenter,Span: 5, Text: "Your Tasks"},
+	}}
+
+	table.SetStyle(simpletable.StyleMarkdown)
+	table.Println()
+}
+
