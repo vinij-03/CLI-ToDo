@@ -110,7 +110,7 @@ func (t *Todos) Print(){
 		{Align: simpletable.AlignCenter,Span: 5, Text: "Your Tasks"},
 	}}
 
-	table.SetStyle(simpletable.StyleMarkdown)
+	table.SetStyle(simpletable.StyleCompactLite)
 	table.Println()
 }
 
